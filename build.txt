@@ -1,0 +1,3 @@
+author = Neojin
+displayName = Neo Light Beams
+version = 0.1
