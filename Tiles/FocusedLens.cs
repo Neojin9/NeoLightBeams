@@ -54,7 +54,7 @@ namespace NeoLightBeams.Tiles {
 
             TOD.newTile.CopyFrom(TOD.StyleTorch);
             TOD.newTile.CoordinateWidth = 16;
-            TOD.newTile.CoordinateHeights = new int[1] { 16 };
+            TOD.newTile.CoordinateHeights = new[] { 16 };
             TOD.newTile.StyleHorizontal = false;
             TOD.newTile.StyleWrapLimit = 1;
             TOD.newTile.StyleMultiplier = 1;
@@ -71,6 +71,7 @@ namespace NeoLightBeams.Tiles {
             Item.NewItem(x * 16, y * 16, 16, 16, itemType);
 
             return base.Drop(x, y);
+
         }
 
         public override void DrawEffects(int x, int y, SpriteBatch spriteBatch, ref Color drawColor, ref int nextSpecialDrawIndex) {
@@ -96,9 +97,7 @@ namespace NeoLightBeams.Tiles {
 
         }
 
-        public override void HitWire(int x, int y) {
-            NeoLightBeams.HitWireList.Add(new Vector2(x, y));
-        }
+        public override void HitWire(int x, int y) => NeoLightBeams.HitWireList.Add(new Vector2(x, y));
 
         public override void KillTile(int x, int y, ref bool fail, ref bool effectOnly, ref bool noItem) {
 
@@ -1125,11 +1124,7 @@ namespace NeoLightBeams.Tiles {
 
         }
 
-        private static Color InvertColor(Color originalColor) {
-
-            return new Color(255 - originalColor.R, 255 - originalColor.G, 255 - originalColor.B, originalColor.A);
-
-        }
+        private static Color InvertColor(Color originalColor) => new Color(255 - originalColor.R, 255 - originalColor.G, 255 - originalColor.B, originalColor.A);
 
         private bool LaserPassesThrough(Tile tile, int tileX = -1, int tileY = -1) {
 
@@ -1286,33 +1281,33 @@ namespace NeoLightBeams.Tiles {
 
                     switch (tileToCheck.type) {
 
-                        case 255:
-                        case 262:
+                        case TileID.AmethystGemspark:
+                        case TileID.AmethystGemsparkOff:
                             _beamColor = Core.Colors.GemAmethyst;
                             break;
 
-                        case 256:
-                        case 263:
+                        case TileID.TopazGemspark:
+                        case TileID.TopazGemsparkOff:
                             _beamColor = Core.Colors.GemTopaz;
                             break;
 
-                        case 257:
-                        case 264:
+                        case TileID.SapphireGemspark:
+                        case TileID.SapphireGemsparkOff:
                             _beamColor = Core.Colors.GemSapphire;
                             break;
 
-                        case 258:
-                        case 265:
+                        case TileID.EmeraldGemspark:
+                        case TileID.EmeraldGemsparkOff:
                             _beamColor = Core.Colors.GemEmerald;
                             break;
 
-                        case 259:
-                        case 266:
+                        case TileID.RubyGemspark:
+                        case TileID.RubyGemsparkOff:
                             _beamColor = Core.Colors.GemRuby;
                             break;
 
-                        case 261:
-                        case 268:
+                        case TileID.AmberGemspark:
+                        case TileID.AmberGemsparkOff:
                             _beamColor = Core.Colors.GemAmber;
                             break;
 
@@ -1368,33 +1363,33 @@ namespace NeoLightBeams.Tiles {
 
                     switch (otherTileToCheck.type) {
 
-                        case 255:
-                        case 262:
+                        case TileID.AmethystGemspark:
+                        case TileID.AmethystGemsparkOff:
                             _beamColor = Core.Colors.GemAmethyst;
                             break;
 
-                        case 256:
-                        case 263:
+                        case TileID.TopazGemspark:
+                        case TileID.TopazGemsparkOff:
                             _beamColor = Core.Colors.GemTopaz;
                             break;
 
-                        case 257:
-                        case 264:
+                        case TileID.SapphireGemspark:
+                        case TileID.SapphireGemsparkOff:
                             _beamColor = Core.Colors.GemSapphire;
                             break;
 
-                        case 258:
-                        case 265:
+                        case TileID.EmeraldGemspark:
+                        case TileID.EmeraldGemsparkOff:
                             _beamColor = Core.Colors.GemEmerald;
                             break;
 
-                        case 259:
-                        case 266:
+                        case TileID.RubyGemspark:
+                        case TileID.RubyGemsparkOff:
                             _beamColor = Core.Colors.GemRuby;
                             break;
 
-                        case 261:
-                        case 268:
+                        case TileID.AmberGemspark:
+                        case TileID.AmberGemsparkOff:
                             _beamColor = Core.Colors.GemAmber;
                             break;
 
@@ -1449,7 +1444,7 @@ namespace NeoLightBeams.Tiles {
 
         }
 
-        private bool StyleIsValid(int x, int y) {
+        private static bool StyleIsValid(int x, int y) {
 
             Tile tileToCheck = null;
             Tile otherTileToCheck = null;
@@ -1534,81 +1529,14 @@ namespace NeoLightBeams.Tiles {
 
         }
 
-        public static Color AlphaBlend2(Color foreGround, Color backGround) {
-
-            CIELCH foreGroundLCH = RGBtoLCH(foreGround);
-            CIELCH backGroundLCH = RGBtoLCH(backGround);
-
-            float l = (float)(foreGroundLCH.L - (foreGroundLCH.L - backGroundLCH.L) / 2f);
-            float c = (float)(foreGroundLCH.C - (foreGroundLCH.C - backGroundLCH.C) / 2f);
-            float h = (float)(foreGroundLCH.H - (foreGroundLCH.H - backGroundLCH.H) / 2f);
-
-            Color newRGB = LCHtoRGB(new CIELCH(l, c, h));
-            newRGB.A = 255;
-
-            return newRGB;
-
-        }
-
-        public static Color AlphaBlend3(Color foreGround, Color backGround) {
-
-            CMYK foreGroundCMYK = RGBtoCMYK(foreGround);
-            CMYK backGroundCMYK = RGBtoCMYK(backGround);
-
-            float c = (float)(foreGroundCMYK.Cyan + backGroundCMYK.Cyan) / 2f;
-            float m = (float)(foreGroundCMYK.Magenta + backGroundCMYK.Magenta) / 2f;
-            float y = (float)(foreGroundCMYK.Yellow + backGroundCMYK.Yellow) / 2f;
-            float k = (float)(foreGroundCMYK.Black + backGroundCMYK.Black) / 2f;
-
-            Color newRGB = CMYKtoRGB(new CMYK(c, m, y, k));
-            newRGB.A = 255;
-
-            return newRGB;
-
-        }
-
         #endregion
 
         #region Color Convert Functions
 
-        /// <summary>
-        /// Converts RGB to CIELCH.
-        /// </summary>
-        public static CIELCH RGBtoLCH(Color color) {
-            return RGBtoLCH(color.R, color.G, color.B);
-        }
+        public static CIELab RGBtoLab(Color color) => RGBtoLab(color.R, color.G, color.B);
 
-        /// <summary>
-        /// Converts RGB to CIELCH.
-        /// </summary>
-        public static CIELCH RGBtoLCH(int red, int green, int blue) {
-            return LabtoLCH(XYZtoLab(RGBtoXYZ(red, green, blue)));
-        }
+        public static CIELab RGBtoLab(int red, int green, int blue) => XYZtoLab(RGBtoXYZ(red, green, blue));
 
-        /// <summary>
-        /// Converts RGB to CIELab.
-        /// </summary>
-        public static CIELab RGBtoLab(Color color) {
-            return RGBtoLab(color.R, color.G, color.B);
-        }
-
-        /// <summary>
-        /// Converts RGB to CIELab.
-        /// </summary>
-        public static CIELab RGBtoLab(int red, int green, int blue) {
-            return XYZtoLab(RGBtoXYZ(red, green, blue));
-        }
-
-        /// <summary>
-        /// Converts RGB to CIE XYZ (CIE 1931 color space)
-        /// </summary>
-        public static CIEXYZ RGBtoXYZ(Color color) {
-            return RGBtoXYZ(color.R, color.G, color.B);
-        }
-
-        /// <summary>
-        /// Converts RGB to CIE XYZ (CIE 1931 color space)
-        /// </summary>
         public static CIEXYZ RGBtoXYZ(int red, int green, int blue) {
 
             // normalize red, green, blue values
@@ -1636,16 +1564,8 @@ namespace NeoLightBeams.Tiles {
 
         }
 
-        /// <summary>
-        /// Converts CIEXYZ to RGB structure.
-        /// </summary>
-        public static Color XYZtoRGB(CIEXYZ xyzColor) {
-            return XYZtoRGB(xyzColor.X, xyzColor.Y, xyzColor.Z);
-        }
+        public static Color XYZtoRGB(CIEXYZ xyzColor) => XYZtoRGB(xyzColor.X, xyzColor.Y, xyzColor.Z);
 
-        /// <summary>
-        /// Converts CIEXYZ to RGB structure.
-        /// </summary>
         public static Color XYZtoRGB(double x, double y, double z) {
             double[] Clinear = new double[3];
             Clinear[0] = x * 3.2410 - y * 1.5374 - z * 0.4986; // red
@@ -1658,34 +1578,16 @@ namespace NeoLightBeams.Tiles {
             }
 
             return new Color(
-                Convert.ToInt32(Double.Parse(String.Format("{0:0.00}",
-                    Clinear[0] * 255.0))),
-                Convert.ToInt32(Double.Parse(String.Format("{0:0.00}",
-                    Clinear[1] * 255.0))),
-                Convert.ToInt32(Double.Parse(String.Format("{0:0.00}",
-                    Clinear[2] * 255.0)))
+                Convert.ToInt32(double.Parse($"{Clinear[0] * 255.0:0.00}")),
+                Convert.ToInt32(double.Parse($"{Clinear[1] * 255.0:0.00}")),
+                Convert.ToInt32(double.Parse($"{Clinear[2] * 255.0:0.00}"))
                 );
         }
 
-        /// <summary>
-        /// XYZ to L*a*b* transformation function.
-        /// </summary>
-        private static double Fxyz(double t) {
-            return ((t > 0.008856) ? Math.Pow(t, (1.0 / 3.0)) : (7.787 * t + 16.0 / 116.0));
-        }
+        private static double Fxyz(double t) => ((t > 0.008856) ? Math.Pow(t, (1.0 / 3.0)) : (7.787 * t + 16.0 / 116.0));
 
-        /// <summary>
-        /// Converts CIEXYZ to CIELab.
-        /// </summary>
-        public static CIELab XYZtoLab(CIEXYZ xyzColor) {
+        public static CIELab XYZtoLab(CIEXYZ xyzColor) => XYZtoLab(xyzColor.X, xyzColor.Y, xyzColor.Z);
 
-            return XYZtoLab(xyzColor.X, xyzColor.Y, xyzColor.Z);
-
-        }
-
-        /// <summary>
-        /// Converts CIEXYZ to CIELab.
-        /// </summary>
         public static CIELab XYZtoLab(double x, double y, double z) {
 
             CIELab lab = CIELab.Empty;
@@ -1698,38 +1600,6 @@ namespace NeoLightBeams.Tiles {
 
         }
 
-        public static CIELCH LabtoLCH(CIELab labColor) {
-            return LabtoLCH(labColor.L, labColor.A, labColor.B);
-        }
-
-        public static CIELCH LabtoLCH(double labL, double labA, double labB) {
-
-            CIELCH lch = CIELCH.Empty;
-
-            double h = Math.Atan2(labB, labA);
-
-            h = (h > 0) ? (h / Math.PI) * 180 : 360 - (Math.Abs(h) / Math.PI) * 180;
-
-            lch.L = labL;
-            lch.C = Math.Sqrt(Math.Pow(labA, 2) + Math.Pow(labB, 2));
-            lch.H = h;
-
-            return lch;
-
-        }
-
-        /// <summary>
-        /// Converts CIELab to CIEXYZ.
-        /// </summary>
-        public static CIEXYZ LabtoXYZ(CIELab labColor) {
-
-            return LabtoXYZ(labColor.L, labColor.A, labColor.B);
-
-        }
-
-        /// <summary>
-        /// Converts CIELab to CIEXYZ.
-        /// </summary>
         public static CIEXYZ LabtoXYZ(double l, double a, double b) {
 
             const double delta = 6.0 / 29.0;
@@ -1748,102 +1618,9 @@ namespace NeoLightBeams.Tiles {
                 );
         }
 
-        /// <summary>
-        /// Converts CIELab to RGB.
-        /// </summary>
-        public static Color LabtoRGB(CIELab labColor) {
-            return LabtoRGB(labColor.L, labColor.A, labColor.B);
-        }
+        public static Color LabtoRGB(CIELab labColor) => LabtoRGB(labColor.L, labColor.A, labColor.B);
 
-        /// <summary>
-        /// Converts CIELab to RGB.
-        /// </summary>
-        public static Color LabtoRGB(double l, double a, double b) {
-            return XYZtoRGB(LabtoXYZ(l, a, b));
-        }
-
-        /// <summary>
-        /// Converts CIELCH to RGB.
-        /// </summary>
-        public static Color LCHtoRGB(CIELCH lchColor) {
-            return LabtoRGB(lchColor.L, lchColor.C, lchColor.H);
-        }
-
-        /// <summary>
-        /// Converts CIELCH to RGB.
-        /// </summary>
-        public static Color LCHtoRGB(double l, double c, double h) {
-            return XYZtoRGB(LabtoXYZ(LCHtoLab(l, c, h)));
-        }
-
-        public static CIELab LCHtoLab(CIELCH lchColor) {
-            return LCHtoLab(lchColor.L, lchColor.C, lchColor.H);
-        }
-
-        public static CIELab LCHtoLab(double l, double c, double h) {
-
-            CIELab lab = CIELab.Empty;
-
-            lab.L = l;
-            lab.A = Math.Cos(MathHelper.ToRadians((float)h)) * c;
-            lab.B = Math.Sin(MathHelper.ToRadians((float)h)) * c;
-
-            return lab;
-
-        }
-
-        /// <summary>
-        /// Converts RGB to CMYK.
-        /// </summary>
-        /// <param name="red">Red vaue must be in [0, 255]. </param>
-        /// <param name="green">Green vaue must be in [0, 255].</param>
-        /// <param name="blue">Blue vaue must be in [0, 255].</param>
-        public static CMYK RGBtoCMYK(Color color) {
-            return RGBtoCMYK(color.R, color.G, color.B);
-        }
-
-        /// <summary>
-        /// Converts RGB to CMYK.
-        /// </summary>
-        /// <param name="red">Red vaue must be in [0, 255]. </param>
-        /// <param name="green">Green vaue must be in [0, 255].</param>
-        /// <param name="blue">Blue vaue must be in [0, 255].</param>
-        public static CMYK RGBtoCMYK(int red, int green, int blue) {
-
-            double c = (double)(255 - red) / 255;
-            double m = (double)(255 - green) / 255;
-            double y = (double)(255 - blue) / 255;
-
-            double k = (double)Math.Min(c, Math.Min(m, y));
-
-            if (k == 1.0) {
-                return new CMYK(0, 0, 0, 1);
-            }
-            else {
-                return new CMYK((c - k) / (1 - k), (m - k) / (1 - k), (y - k) / (1 - k), k);
-            }
-
-        }
-
-        /// <summary>
-        /// Converts CMYK to RGB.
-        /// </summary>
-        public static Color CMYKtoRGB(CMYK cmyk) {
-            return CMYKtoRGB(cmyk.Cyan, cmyk.Magenta, cmyk.Yellow, cmyk.Black);
-        }
-
-        /// <summary>
-        /// Converts CMYK to RGB.
-        /// </summary>
-        public static Color CMYKtoRGB(double c, double m, double y, double k) {
-
-            int red = (int)((1 - c) * (1 - k) * 255f);
-            int green = (int)((1 - m) * (1 - k) * 255f);
-            int blue = (int)((1 - y) * (1 - k) * 255f);
-
-            return new Color(red, green, blue);
-
-        }
+        public static Color LabtoRGB(double l, double a, double b) => XYZtoRGB(LabtoXYZ(l, a, b));
 
         #endregion Color Blending Functions
 
@@ -1855,20 +1632,9 @@ namespace NeoLightBeams.Tiles {
 
     #region Color Color Structures
 
-    /// <summary>
-    /// Structure to define CIE L*a*b*.
-    /// </summary>
     public struct CIELab {
 
-        /// <summary>
-        /// Gets an empty CIELab structure.
-        /// </summary>
         public static readonly CIELab Empty = new CIELab();
-
-        private double l;
-        private double a;
-        private double b;
-
 
         public static bool operator ==(CIELab item1, CIELab item2) {
             return (
@@ -1886,76 +1652,34 @@ namespace NeoLightBeams.Tiles {
                 );
         }
 
+        public double L { get; set; }
 
-        /// <summary>
-        /// Gets or sets L component.
-        /// </summary>
-        public double L {
-            get {
-                return l;
-            }
-            set {
-                l = value;
-            }
-        }
+        public double A { get; set; }
 
-        /// <summary>
-        /// Gets or sets a component.
-        /// </summary>
-        public double A {
-            get {
-                return a;
-            }
-            set {
-                a = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a component.
-        /// </summary>
-        public double B {
-            get {
-                return b;
-            }
-            set {
-                b = value;
-            }
-        }
+        public double B { get; set; }
 
         public CIELab(double l, double a, double b) {
-            this.l = l;
-            this.a = a;
-            this.b = b;
+            L = l;
+            A = a;
+            B = b;
         }
 
-        public override bool Equals(Object obj) {
+        public override bool Equals(object obj) {
+
             if (obj == null || GetType() != obj.GetType())
                 return false;
 
             return (this == (CIELab)obj);
+
         }
 
-        public override int GetHashCode() {
-            return L.GetHashCode() ^ A.GetHashCode() ^ B.GetHashCode();
-        }
+        public override int GetHashCode() => L.GetHashCode() ^ A.GetHashCode() ^ B.GetHashCode();
 
     }
 
-    /// <summary>
-    /// Structure to define CIE L*CH.
-    /// </summary>
     public struct CIELCH {
 
-        /// <summary>
-        /// Gets an empty CIELab structure.
-        /// </summary>
         public static readonly CIELCH Empty = new CIELCH();
-
-        private double l;
-        private double c;
-        private double h;
-
 
         public static bool operator ==(CIELCH item1, CIELCH item2) {
             return (
@@ -1973,75 +1697,33 @@ namespace NeoLightBeams.Tiles {
                 );
         }
 
+        public double L { get; set; }
 
-        /// <summary>
-        /// Gets or sets L component.
-        /// </summary>
-        public double L {
-            get {
-                return l;
-            }
-            set {
-                l = value;
-            }
-        }
+        public double C { get; set; }
 
-        /// <summary>
-        /// Gets or sets C component.
-        /// </summary>
-        public double C {
-            get {
-                return c;
-            }
-            set {
-                c = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets H component.
-        /// </summary>
-        public double H {
-            get {
-                return h;
-            }
-            set {
-                h = value;
-            }
-        }
+        public double H { get; set; }
 
         public CIELCH(double l, double c, double h) {
-            this.l = l;
-            this.c = c;
-            this.h = h;
+            L = l;
+            C = c;
+            H = h;
         }
 
-        public override bool Equals(Object obj) {
+        public override bool Equals(object obj) {
             if (obj == null || GetType() != obj.GetType())
                 return false;
 
             return (this == (CIELCH)obj);
         }
 
-        public override int GetHashCode() {
-            return L.GetHashCode() ^ C.GetHashCode() ^ H.GetHashCode();
-        }
+        public override int GetHashCode() => L.GetHashCode() ^ C.GetHashCode() ^ H.GetHashCode();
 
     }
 
-    /// <summary>
-    /// Structure to define CIE XYZ.
-    /// </summary>
     public struct CIEXYZ {
 
-        /// <summary>
-        /// Gets an empty CIEXYZ structure.
-        /// </summary>
         public static readonly CIEXYZ Empty = new CIEXYZ();
 
-        /// <summary>
-        /// Gets the CIE D65 (white) structure.
-        /// </summary>
         public static readonly CIEXYZ D65 = new CIEXYZ(0.9505, 1.0, 1.0890);
 
         private double x;
@@ -2064,9 +1746,6 @@ namespace NeoLightBeams.Tiles {
                 );
         }
 
-        /// <summary>
-        /// Gets or sets X component.
-        /// </summary>
         public double X {
             get {
                 return x;
@@ -2076,9 +1755,6 @@ namespace NeoLightBeams.Tiles {
             }
         }
 
-        /// <summary>
-        /// Gets or sets Y component.
-        /// </summary>
         public double Y {
             get {
                 return y;
@@ -2088,9 +1764,6 @@ namespace NeoLightBeams.Tiles {
             }
         }
 
-        /// <summary>
-        /// Gets or sets Z component.
-        /// </summary>
         public double Z {
             get {
                 return z;
@@ -2106,27 +1779,19 @@ namespace NeoLightBeams.Tiles {
             this.z = (z > 1.089) ? 1.089 : ((z < 0) ? 0 : z);
         }
 
-        public override bool Equals(Object obj) {
+        public override bool Equals(object obj) {
             if (obj == null || GetType() != obj.GetType())
                 return false;
 
             return (this == (CIEXYZ)obj);
         }
 
-        public override int GetHashCode() {
-            return X.GetHashCode() ^ Y.GetHashCode() ^ Z.GetHashCode();
-        }
+        public override int GetHashCode() => X.GetHashCode() ^ Y.GetHashCode() ^ Z.GetHashCode();
 
     }
 
-    /// <summary>
-    /// Structure to define CMYK.
-    /// </summary>
     public struct CMYK {
 
-        /// <summary>
-        /// Gets an empty CMYK structure;
-        /// </summary>
         public readonly static CMYK Empty = new CMYK();
 
         private double c;
@@ -2192,9 +1857,6 @@ namespace NeoLightBeams.Tiles {
             }
         }
 
-        /// <summary>
-        /// Creates an instance of a CMYK structure.
-        /// </summary>
         public CMYK(double c, double m, double y, double k) {
             this.c = c;
             this.m = m;
@@ -2202,17 +1864,14 @@ namespace NeoLightBeams.Tiles {
             this.k = k;
         }
 
-        public override bool Equals(Object obj) {
+        public override bool Equals(object obj) {
             if (obj == null || GetType() != obj.GetType())
                 return false;
 
             return (this == (CMYK)obj);
         }
 
-        public override int GetHashCode() {
-            return Cyan.GetHashCode() ^
-              Magenta.GetHashCode() ^ Yellow.GetHashCode() ^ Black.GetHashCode();
-        }
+        public override int GetHashCode() => Cyan.GetHashCode() ^ Magenta.GetHashCode() ^ Yellow.GetHashCode() ^ Black.GetHashCode();
 
     }
 
