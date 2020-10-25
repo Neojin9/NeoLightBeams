@@ -274,13 +274,13 @@ namespace NeoLightBeams.Tiles {
 
                     if (tileAbove.frameX == Style.DownRight) {
 
-                        sb.Draw(NeoLightBeams.BeamBounce90, new Vector2(screenPos.X + offset, screenPos.Y - count * 16 + offset), null, _beamColorModified * Alpha, 0f, default, 1f, SpriteEffects.FlipVertically, 0f);
+                        sb.Draw(NeoLightBeams.BeamBounce90, new Vector2(screenPos.X + offset - 8, screenPos.Y - count * 16 + offset - 8), null, _beamColorModified * Alpha, 0f, default, 1f, SpriteEffects.FlipVertically, 0f);
                         BeamRight(sb, new Vector2(((curPos.X + 1) * 16) - Main.screenPosition.X, ((curPos.Y - count) * 16) - Main.screenPosition.Y), 0);
 
                     }
                     else if (tileAbove.frameX == Style.DownLeft) {
 
-                        sb.Draw(NeoLightBeams.BeamBounce90, new Vector2(screenPos.X + offset, screenPos.Y - count * 16 + offset), null, _beamColorModified * Alpha, 0f, default, 1f, SpriteEffects.FlipHorizontally | SpriteEffects.FlipVertically, 0f);
+                        sb.Draw(NeoLightBeams.BeamBounce90, new Vector2(screenPos.X + offset - 8, screenPos.Y - count * 16 + offset - 8), null, _beamColorModified * Alpha, 0f, default, 1f, SpriteEffects.FlipHorizontally | SpriteEffects.FlipVertically, 0f);
                         BeamLeft(sb, new Vector2(((curPos.X - 1) * 16) - Main.screenPosition.X, ((curPos.Y - count) * 16) - Main.screenPosition.Y), 0);
 
                     }

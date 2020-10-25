@@ -71,8 +71,8 @@ namespace NeoLightBeams {
 
         public override void PreUpdateEntities() {
 
-            if (Main.gameMenu)
-                return;
+            //if (Main.gameMenu)
+            //    return;
 
             TotalBeamLength = 0;
 
